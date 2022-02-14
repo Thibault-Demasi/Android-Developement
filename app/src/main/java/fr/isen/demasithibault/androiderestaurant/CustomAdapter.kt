@@ -6,15 +6,14 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 import fr.isen.demasithibault.androiderestaurant.model.DishModel
 
-class CustomAdapter(private val mList: List<DishModel>, private val cellClickListener : CellClickListener) : RecyclerView.Adapter<CustomAdapter.ViewHolder>(){
+class CustomAdapter(private val mList: List<DishModel>, private val cellClickListener: CellClickListener) : RecyclerView.Adapter<CustomAdapter.ViewHolder>(){
 
 
     // create new views
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        // inflates the card_view_design view
-        // that is used to hold list item
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.design_for_list, parent, false)
 
@@ -26,10 +25,18 @@ class CustomAdapter(private val mList: List<DishModel>, private val cellClickLis
 
         val dish = mList[position]
 
+        if(dish.image[0]!="") {
+            Picasso.get()
+                .load(dish.image[0])
+                .error(R.drawable.error_foreground)
+                .into(holder.itemImage)
+        } else {
+            holder.itemImage.setImageResource(R.drawable.error_foreground)
+        }
 
-        //holder.itemImage.setImageResource(DishModel.)
         holder.itemText.text = dish.name_fr
-        //holder.itemDetail.text = ItemsViewModel.detail
+        holder.itemPrice.text = dish.prices[0].price+"€"
+
 
         val data = mList[position]
         holder.itemView.setOnClickListener {
@@ -37,16 +44,14 @@ class CustomAdapter(private val mList: List<DishModel>, private val cellClickLis
         }
 
     }
-
-    // return the number of the items in the list
     override fun getItemCount(): Int {
         return mList.size
     }
 
     // Holds the views for adding it to image and text
     class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
-        //val itemImage: ImageView = itemView.findViewById(R.id.itemimage)
         val itemText: TextView = itemView.findViewById(R.id.textView)
-        //val itemDetail: TextView = itemView.findViewById(R.id.itemdetail)
+        val itemImage: ImageView = itemView.findViewById(R.id.imageview)
+        val itemPrice: TextView = itemView.findViewById(R.id.price)
     }
 }

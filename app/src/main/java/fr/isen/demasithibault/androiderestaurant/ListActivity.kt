@@ -16,21 +16,21 @@ import fr.isen.demasithibault.androiderestaurant.model.DishResult
 import org.json.JSONObject
 
 
-class ListActivity : AppCompatActivity() {
+class ListActivity : AppCompatActivity(), CellClickListener {
 
     private lateinit var binding: ActivityListBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_list)
+        //setContentView(R.layout.activity_list)
 
         binding = ActivityListBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
 
         var category: String? = ""
-        if (intent.hasExtra("selectedCategory")) {
-            category = intent.getStringExtra("selectedCategory")
+        if (intent.hasExtra("category_type")) {
+            category = intent.getStringExtra("category_type")
         }
         val textViewCategory = binding.lunchTitle
         textViewCategory.setText(category)
@@ -88,11 +88,7 @@ class ListActivity : AppCompatActivity() {
     override fun onCellClickListener(data: DishModel) {
         val monIntent: Intent =  Intent(this, DetailActivity::class.java)
         monIntent.putExtra("itemDish", data)
-
-
-
         startActivity(monIntent)
     }
-
 
 }
